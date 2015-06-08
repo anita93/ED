@@ -1,0 +1,54 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="OrganizationDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="tbl_Dept">
+    <Key>
+      <PropertyRef Name="DId" />
+    </Key>
+    <Property Name="DId" Type="Int32" Nullable="false" />
+    <Property Name="DName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="HOD" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="tbl_Emp" Relationship="Self.FK_tbl_Emp_ToTable" FromRole="tbl_Dept" ToRole="tbl_Emp" />
+  </EntityType>
+  <EntityType Name="tbl_Emp">
+    <Key>
+      <PropertyRef Name="EId" />
+    </Key>
+    <Property Name="EId" Type="Int32" Nullable="false" />
+    <Property Name="Ename" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Salary" Type="Int32" />
+    <Property Name="DOB" Type="DateTime" Precision="3" />
+    <Property Name="DeptId" Type="Int32" />
+    <NavigationProperty Name="tbl_Dept" Relationship="Self.FK_tbl_Emp_ToTable" FromRole="tbl_Emp" ToRole="tbl_Dept" />
+  </EntityType>
+  <EntityType Name="tbl_User">
+    <Key>
+      <PropertyRef Name="UserId" />
+    </Key>
+    <Property Name="UserId" Type="Int32" Nullable="false" />
+    <Property Name="FullName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="UserName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Role" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+  </EntityType>
+  <Association Name="FK_tbl_Emp_ToTable">
+    <End Role="tbl_Dept" Type="Self.tbl_Dept" Multiplicity="0..1" />
+    <End Role="tbl_Emp" Type="Self.tbl_Emp" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tbl_Dept">
+        <PropertyRef Name="DId" />
+      </Principal>
+      <Dependent Role="tbl_Emp">
+        <PropertyRef Name="DeptId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="OrganizationDBEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="tbl_Dept" EntityType="Self.tbl_Dept" />
+    <EntitySet Name="tbl_Emp" EntityType="Self.tbl_Emp" />
+    <EntitySet Name="tbl_User" EntityType="Self.tbl_User" />
+    <AssociationSet Name="FK_tbl_Emp_ToTable" Association="Self.FK_tbl_Emp_ToTable">
+      <End Role="tbl_Dept" EntitySet="tbl_Dept" />
+      <End Role="tbl_Emp" EntitySet="tbl_Emp" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>
